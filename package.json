@@ -25,9 +25,7 @@
   },
   "homepage": "https://github.com/digitalbazaar/oauth2-token-endpoint-handler",
   "dependencies": {
-    "bnid": "^2.0.0",
-    "@interop/oauth2-errors": "^2.0.0",
-    "snake-case": "^3.0.3"
+    "@interop/oauth2-errors": "^2.0.0"
   },
   "directories": {
     "lib": "./lib"
