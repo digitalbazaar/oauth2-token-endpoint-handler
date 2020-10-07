@@ -1,4 +1,4 @@
-# Bedrock OAuth2 Token Request Handler _(oauth2-token-endpoint-handler)_
+# Bedrock OAuth2 Token Request Handler _(@digitalbazaar/oauth2-token-endpoint-handler)_
 
 [![Node.js CI](https://github.com/digitalbazaar/oauth2-token-endpoint-handler/workflows/Node.js%20CI/badge.svg)](https://github.com/digitalbazaar/oauth2-token-endpoint-handler/actions?query=workflow%3A%22Node.js+CI%22)
 
@@ -54,7 +54,7 @@ npm install
 ## Usage
 
 ```js
-const {handleTokenExchange} = require('oauth2-token-endpoint-handler');
+const {handleTokenExchange} = require('@digitalbazaar/oauth2-token-endpoint-handler');
 
 app.post('/token',
   // ... make sure to mount url-encoded body parser such as express.urlencoded()
