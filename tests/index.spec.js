@@ -1,14 +1,17 @@
+/*!
+ * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
+ */
 'use strict';
+
 const chai = require('chai');
+const express = require('express');
+const {tokenExchangeHandler} = require('../lib');
+const {InvalidClient} = require('@interop/oauth2-errors');
+
 chai.use(require('chai-http'));
 chai.should();
 
-const express = require('express');
 const bodyParserUrl = express.urlencoded({extended: true});
-
-const {
-  tokenExchangeHandler
-} = require('../lib');
 
 const tokenUrl = '/token';
 const MOCK_ACCESS_TOKEN = 'eyJhbGciOiJFUzI1NiIsImtpZCI6Ijc3In0' +
@@ -16,6 +19,19 @@ const MOCK_ACCESS_TOKEN = 'eyJhbGciOiJFUzI1NiIsImtpZCI6Ijc3In0' +
   'IiOiJfX2JfYyIsImV4cCI6MTU4ODQyMDgwMCwic2NvcGUiOiJjYWxlbmRhciIsImF1ZCI6I' +
   'mh0dHBzOi8vY2FsLmV4YW1wbGUuY29tLyJ9.nNWJ2dXSxaDRdMUKlzs-cYI' +
   'j8MDoM6Gy7pf_sKrLGsAFf1C2bDhB60DQfW1DZL5npdko1_Mmk5sUfzkiQNVpYw';
+
+const mockAuthenticateClient = async ({client, clientSecret}) => {
+  if(!client) {
+    throw new InvalidClient({
+      description: 'Unknown client identifier.'
+    });
+  }
+
+  const {client_secret: storedClientSecret} = client;
+
+  // NOTE: a timing safe comparison is recommended
+  return {authenticated: clientSecret === storedClientSecret};
+};
 
 // eslint-disable-next-line no-unused-vars
 const mockGetClient = async ({clientId}) => {
@@ -42,6 +58,7 @@ describe('tokenExchangeHandler', () => {
     tokenUrl,
     bodyParserUrl,
     tokenExchangeHandler({
+      authenticateClient: mockAuthenticateClient,
       getClient: mockGetClient,
       issue: mockIssue
     })
