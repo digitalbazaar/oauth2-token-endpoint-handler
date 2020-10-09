@@ -2,13 +2,12 @@
 const chai = require('chai');
 chai.use(require('chai-http'));
 chai.should();
-// const {expect} = chai;
 
 const express = require('express');
-const bodyParserUrl = express.urlencoded();
+const bodyParserUrl = express.urlencoded({extended: true});
 
 const {
-  handleTokenExchange
+  tokenExchangeHandler
 } = require('../lib');
 
 const tokenUrl = '/token';
@@ -18,6 +17,7 @@ const MOCK_ACCESS_TOKEN = 'eyJhbGciOiJFUzI1NiIsImtpZCI6Ijc3In0' +
   'mh0dHBzOi8vY2FsLmV4YW1wbGUuY29tLyJ9.nNWJ2dXSxaDRdMUKlzs-cYI' +
   'j8MDoM6Gy7pf_sKrLGsAFf1C2bDhB60DQfW1DZL5npdko1_Mmk5sUfzkiQNVpYw';
 
+// eslint-disable-next-line no-unused-vars
 const mockGetClient = async ({clientId}) => {
   return {
     client: {
@@ -28,6 +28,7 @@ const mockGetClient = async ({clientId}) => {
   };
 };
 
+// eslint-disable-next-line no-unused-vars
 const mockIssue = async ({client, resource, scope, body, defaultMaxAge}) => {
   return {
     accessToken: MOCK_ACCESS_TOKEN,
@@ -35,12 +36,12 @@ const mockIssue = async ({client, resource, scope, body, defaultMaxAge}) => {
   };
 };
 
-describe('handleTokenExchange', () => {
+describe('tokenExchangeHandler', () => {
   const app = express();
   app.post(
     tokenUrl,
     bodyParserUrl,
-    handleTokenExchange({
+    tokenExchangeHandler({
       getClient: mockGetClient,
       issue: mockIssue
     })

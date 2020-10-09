@@ -54,12 +54,11 @@ npm install
 ## Usage
 
 ```js
-const {handleTokenExchange} = require('@digitalbazaar/oauth2-token-endpoint-handler');
+const {tokenExchangeHandler} = require('@digitalbazaar/oauth2-token-endpoint-handler');
 
 app.post('/token',
   // ... make sure to mount url-encoded body parser such as express.urlencoded()
-  handleTokenExchange({
-    baseUrl: 'https://as.example.com',
+  tokenExchangeHandler({
     defaults: {
       // (Optional) token expiration in seconds. Defaults to 2 weeks
       defaultMaxAge: 1209600
