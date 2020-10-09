@@ -29,7 +29,7 @@ const mockAuthenticateClient = async ({client, clientSecret}) => {
 
   const {client_secret: storedClientSecret} = client;
 
-  // NOTE: a timing safe comparison is recommended
+  // NOTE: a timing safe comparison is required, this example is NOT secure
   return {authenticated: clientSecret === storedClientSecret};
 };
 
