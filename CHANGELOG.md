@@ -1,5 +1,10 @@
 # @digitalbazaar/oauth2-token-endpoint-handler ChangeLog
 
+## 1.0.2 - 2020-10-11
+
+### Changed
+- Fix: Allow issuer to control `scope` of token (based on `scopeRequested`).
+
 ## 1.0.1 - 2020-10-11
 
 ### Changed
