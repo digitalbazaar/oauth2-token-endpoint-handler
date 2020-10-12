@@ -65,11 +65,15 @@ app.post('/token',
     },
     logger: console,
     getClient: async ({clientId}) => {
-      // load client from the db, then:
+      // callback to load client from the db, then:
       return {client};
     },
-    issue: async ({client, resource, scope, body, defaultMaxAge}) => {
-      // issue JWT access token here
+    authenticateClient: async ({client, clientSecret}) => {
+      // callback to authenticate client (compare hash of clientSecret to
+      // what's stored, etc).
+    },
+    issue: async ({client, resource, scopeRequested, body, defaultMaxAge}) => {
+      // callback to issue JWT access token
       return {accessToken, expiresIn};
     }
   })
