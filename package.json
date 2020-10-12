@@ -1,6 +1,6 @@
 {
   "name": "@digitalbazaar/oauth2-token-endpoint-handler",
-  "version": "1.0.2-0",
+  "version": "1.0.2",
   "description": "OAuth2 Token endpoint handler for custom authorization servers.",
   "main": "./lib",
   "scripts": {
