@@ -5,7 +5,8 @@
 
 const chai = require('chai');
 const express = require('express');
-const {tokenExchangeHandler} = require('../lib');
+const {tokenExchangeHandler, _respond} = require('../lib');
+const noopLogger = require('../lib/noopLogger');
 const {InvalidClient} = require('@interop/oauth2-errors');
 
 chai.use(require('chai-http'));
@@ -74,6 +75,11 @@ describe('tokenExchangeHandler', () => {
     requester.close();
   });
 
-  it.skip('should work', async () => {
+  it(`should properly export noopLogger`, async () => {
+    (typeof noopLogger === 'object').should.be.true;
+  });
+  it(`should properly export functions from main.js`, async () => {
+    (typeof tokenExchangeHandler === 'function').should.be.true;
+    (typeof _respond === 'function').should.be.true;
   });
 });
