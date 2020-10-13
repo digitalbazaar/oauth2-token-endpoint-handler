@@ -1,15 +1,14 @@
 /*!
  * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import express from 'express';
+import {InvalidClient} from '@interop/oauth2-errors';
+import noopLogger from '../lib/noopLogger';
+import {tokenExchangeHandler, _respond} from '../lib';
 
-const chai = require('chai');
-const express = require('express');
-const {tokenExchangeHandler, _respond} = require('../lib');
-const noopLogger = require('../lib/noopLogger');
-const {InvalidClient} = require('@interop/oauth2-errors');
-
-chai.use(require('chai-http'));
+chai.use(chaiHttp);
 chai.should();
 
 const bodyParserUrl = express.urlencoded({extended: true});

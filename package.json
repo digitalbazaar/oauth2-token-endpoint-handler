@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "npm run lint && npm run test-node",
-    "test-node": "cross-env NODE_ENV=test mocha --preserve-symlinks -t 10000 tests/**/*.spec.js"
+    "test-node": "cross-env NODE_ENV=test mocha -r esm --preserve-symlinks -t 10000 tests/**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/digitalbazaar/oauth2-token-endpoint-handler",
   "dependencies": {
     "@interop/oauth2-errors": "^2.0.0",
+    "assert-plus": "^1.0.0",
     "esm": "^3.2.25"
   },
   "directories": {
