@@ -11,6 +11,7 @@ import {tokenExchangeHandler, _respond} from '../lib';
 chai.use(chaiHttp);
 chai.should();
 
+const {expect} = chai;
 const bodyParserUrl = express.urlencoded({extended: true});
 
 const tokenUrl = '/token';
@@ -26,21 +27,17 @@ const mockAuthenticateClient = async ({client, clientSecret}) => {
       description: 'Unknown client identifier.'
     });
   }
-
   const {client_secret: storedClientSecret} = client;
 
   // NOTE: a timing safe comparison is required, this example is NOT secure
   return {authenticated: clientSecret === storedClientSecret};
 };
 
-// eslint-disable-next-line no-unused-vars
-const mockGetClient = async ({clientId}) => {
+const mockGetClient = async ({clientId = 's6BhdRkqt3'}) => {
   return {
-    client: {
-      client_id: 's6BhdRkqt3',
-      client_secret: '7Fjfp0ZBr1KtDRbnfVdmIw',
-      scope: ''
-    }
+    client_id: clientId,
+    client_secret: '7Fjfp0ZBr1KtDRbnfVdmIw',
+    scope: ''
   };
 };
 
@@ -81,4 +78,89 @@ describe('tokenExchangeHandler', () => {
     (typeof tokenExchangeHandler === 'function').should.be.true;
     (typeof _respond === 'function').should.be.true;
   });
+  it('should error if missing client credentials', async () => {
+    const res = await requester.post(tokenUrl).send({});
+    expect(res).to.have.status(400);
+    expect(res).to.be.json;
+    expect(res.body.error).to.equal('unauthorized_client');
+    expect(res.body.error_description)
+      .to.equal('Missing client credentials at the Token endpoint.');
+  });
+  it('should error if missing grant_type param', async () => {
+    const res = await requester.post(tokenUrl)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        client_id: 'some_id',
+        client_secret: 'test_secret'
+      });
+    expect(res).to.have.status(400);
+    expect(res).to.be.json;
+    expect(res.body.error).to.equal('invalid_request');
+    expect(res.body.error_description)
+      .to.equal('Missing grant_type parameter.');
+  });
+  it('should error if grant_type is invalid', async () => {
+    const res = await requester.post(tokenUrl)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        client_id: 'some_id',
+        client_secret: 'test_secret',
+        grant_type: 'invalid_type'
+      });
+    expect(res).to.have.status(400);
+    expect(res).to.be.json;
+    expect(res.body.error).to.equal('invalid_grant');
+    expect(res.body.error_description)
+      .to.equal('Grant type "invalid_type" is not supported.');
+  });
+  it('should error if grant_type is client_credentials and ' +
+  'redirectUri is given', async () => {
+    const res = await requester.post(tokenUrl)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        client_id: 'some_id',
+        client_secret: 'test_secret',
+        grant_type: 'client_credentials',
+        redirect_uri: 'http://example.com'
+      });
+    expect(res).to.have.status(400);
+    expect(res).to.be.json;
+    expect(res.body.error).to.equal('invalid_grant');
+    expect(res.body.error_description)
+      .to.equal(
+        'Grant type "client_credentials" cannot have "redirectUri" param.');
+  });
+  it('should error if client secret is invalid', async () => {
+    const res = await requester.post(tokenUrl)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        client_id: 'some_id',
+        client_secret: 'invalid_secret',
+        grant_type: 'client_credentials',
+        scope: 'read'
+      });
+    expect(res).to.have.status(400);
+    expect(res).to.be.json;
+    expect(res.body.error).to.equal('invalid_client');
+    expect(res.body.error_description).to.equal(
+      'The client secret could not be authenticated.');
+  });
+  it('should return a valid access token with correct client credentials',
+    async () => {
+      const res = await requester.post(tokenUrl)
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send({
+          client_id: 'some_id',
+          client_secret: '7Fjfp0ZBr1KtDRbnfVdmIw',
+          grant_type: 'client_credentials',
+          scope: 'read'
+        });
+      expect(res).to.have.status(201);
+      expect(res).to.be.json;
+      expect(res.body.access_token).to.be.a('string');
+      expect(res.body.token_type).to.be.a('string');
+      expect(res.body.token_type).to.equal('Bearer');
+      expect(res.body.expires_in).to.be.a('number');
+      expect(res.body.expires_in).to.equal(3600);
+    });
 });
