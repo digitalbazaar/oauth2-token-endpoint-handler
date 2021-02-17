@@ -137,7 +137,6 @@ describe('tokenExchangeHandler', () => {
         client_id: 'some_id',
         client_secret: 'invalid_secret',
         grant_type: 'client_credentials',
-        scope: 'read'
       });
     expect(res).to.have.status(400);
     expect(res).to.be.json;
@@ -153,7 +152,6 @@ describe('tokenExchangeHandler', () => {
           client_id: 'some_id',
           client_secret: '7Fjfp0ZBr1KtDRbnfVdmIw',
           grant_type: 'client_credentials',
-          scope: 'read'
         });
       expect(res).to.have.status(201);
       expect(res).to.be.json;
@@ -163,4 +161,29 @@ describe('tokenExchangeHandler', () => {
       expect(res.body.expires_in).to.be.a('number');
       expect(res.body.expires_in).to.equal(3600);
     });
+  it('should error if it fails to load client', async () => {
+    const badApp = express();
+    badApp.post(
+      tokenUrl,
+      bodyParserUrl,
+      tokenExchangeHandler({
+        authenticateClient: mockAuthenticateClient,
+        getClient: () => {
+          throw new Error('Failed to get client.');
+        },
+        issue: mockIssue
+      })
+    );
+    const res = await chai.request(badApp).post(tokenUrl)
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        client_id: 'some_id',
+        client_secret: '7Fjfp0ZBr1KtDRbnfVdmIw',
+        grant_type: 'client_credentials',
+      });
+    expect(res).to.have.status(400);
+    expect(res).to.be.json;
+    expect(res.body.error).to.equal('invalid_request');
+    expect(res.body.error_description).to.equal('Could not load client.');
+  });
 });
