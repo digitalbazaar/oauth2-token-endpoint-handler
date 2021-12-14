@@ -7,6 +7,13 @@ import express from 'express';
 import {InvalidClient} from '@interop/oauth2-errors';
 import noopLogger from '../lib/noopLogger';
 import {tokenExchangeHandler, _respond} from '../lib';
+import {LruCache} from '@digitalbazaar/lru-memoize';
+
+const cache = new LruCache({
+  max: 10,
+  // 5 minutes
+  maxAge: 300000
+});
 
 chai.use(chaiHttp);
 chai.should();
@@ -57,7 +64,8 @@ describe('tokenExchangeHandler', () => {
     tokenExchangeHandler({
       authenticateClient: mockAuthenticateClient,
       getClient: mockGetClient,
-      issue: mockIssue
+      issue: mockIssue,
+      cache
     })
   );
 
@@ -138,7 +146,7 @@ describe('tokenExchangeHandler', () => {
         client_secret: 'invalid_secret',
         grant_type: 'client_credentials',
       });
-    expect(res).to.have.status(400);
+    expect(res).to.have.status(401);
     expect(res).to.be.json;
     expect(res.body.error).to.equal('invalid_client');
     expect(res.body.error_description).to.equal(
