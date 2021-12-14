@@ -1,5 +1,10 @@
 # @digitalbazaar/oauth2-token-endpoint-handler ChangeLog
 
+## 2.0.0 - 2021-xx-xx
+
+### Added
+- **BREAKING**: Added new parameter `cache` to `tokenExchangeHandler`.
+
 ## 1.0.2 - 2020-10-11
 
 ### Changed
