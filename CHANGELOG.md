@@ -3,7 +3,10 @@
 ## 2.0.0 - 2021-xx-xx
 
 ### Added
-- **BREAKING**: Added new parameter `cache` to `tokenExchangeHandler`.
+- **BREAKING**: Added new parameter `cache` to `tokenExchangeHandler`. This is
+  for security, as it limits the number of access tokens issued to each client.
+  There is no forced cache clearing, so if a client secret is updated, the old
+  access token will continue to be handed out until the cache releases it.
 
 ## 1.0.2 - 2020-10-11
 
