@@ -1,13 +1,13 @@
 /*!
- * Copyright (c) 2020 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2020-2023 Digital Bazaar, Inc. All rights reserved.
  */
+import {_respond, tokenExchangeHandler} from '../lib/index.js';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import express from 'express';
 import {InvalidClient} from '@interop/oauth2-errors';
-import noopLogger from '../lib/noopLogger';
-import {tokenExchangeHandler, _respond} from '../lib';
 import {LruCache} from '@digitalbazaar/lru-memoize';
+import noopLogger from '../lib/noopLogger.js';
 
 const cache = new LruCache({
   max: 10,

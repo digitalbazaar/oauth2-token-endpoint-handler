@@ -2,14 +2,15 @@
   "name": "@digitalbazaar/oauth2-token-endpoint-handler",
   "version": "2.0.1-0",
   "description": "OAuth2 Token endpoint handler for custom authorization servers.",
-  "main": "./lib",
+  "type": "module",
+  "main": "./lib/index.js",
   "scripts": {
     "lint": "eslint .",
     "test": "npm run lint && npm run test-node",
-    "test-node": "cross-env NODE_ENV=test mocha -r esm --preserve-symlinks -t 10000 tests/*.spec.js",
-    "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text-summary npm test",
-    "coverage-ci": "cross-env NODE_ENV=test nyc --reporter=lcovonly npm test",
-    "coverage-report": "nyc report"
+    "test-node": "cross-env NODE_ENV=test mocha --preserve-symlinks -t 10000 tests/*.spec.js",
+    "coverage": "cross-env NODE_ENV=test c8 --reporter=lcov --reporter=text-summary npm test",
+    "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly npm test",
+    "coverage-report": "npm run coverage-ci && c8 report"
   },
   "repository": {
     "type": "git",
@@ -28,32 +29,23 @@
   },
   "homepage": "https://github.com/digitalbazaar/oauth2-token-endpoint-handler",
   "dependencies": {
-    "@interop/oauth2-errors": "^2.0.0",
-    "assert-plus": "^1.0.0",
-    "esm": "^3.2.25"
+    "@interop/oauth2-errors": "^2.1.0",
+    "assert-plus": "^1.0.0"
   },
   "directories": {
     "lib": "./lib"
   },
   "devDependencies": {
-    "@digitalbazaar/lru-memoize": "^2.1.0",
-    "chai": "^4.2.0",
+    "@digitalbazaar/lru-memoize": "^3.0.0",
+    "chai": "^4.3.7",
     "chai-http": "^4.3.0",
-    "cross-env": "^7.0.2",
-    "eslint": "^7.9.0",
-    "eslint-config-digitalbazaar": "^2.6.1",
-    "eslint-plugin-jsdoc": "^30.2.0",
-    "express": "^4.17.1",
-    "mocha": "^8.1.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.33.0",
+    "eslint-config-digitalbazaar": "^4.2.0",
+    "eslint-plugin-jsdoc": "^39.7.5",
+    "eslint-plugin-unicorn": "^45.0.2",
+    "express": "^4.18.2",
+    "mocha": "^10.2.0",
     "nyc": "^15.1.0"
-  },
-  "nyc": {
-    "exclude": [
-      "tests"
-    ],
-    "reporter": [
-      "html",
-      "text-summary"
-    ]
   }
 }
