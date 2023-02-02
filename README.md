@@ -41,7 +41,7 @@ TBD
 
 ## Install
 
-- Node.js 12+ is required.
+- Node.js >= 16 is required.
 
 To install locally (for development):
 
@@ -54,7 +54,7 @@ npm install
 ## Usage
 
 ```js
-const {tokenExchangeHandler} = require('@digitalbazaar/oauth2-token-endpoint-handler');
+import {tokenExchangeHandler} from '@digitalbazaar/oauth2-token-endpoint-handler';
 
 app.post('/token',
   // ... make sure to mount url-encoded body parser such as express.urlencoded()
