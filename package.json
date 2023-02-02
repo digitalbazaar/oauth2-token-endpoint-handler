@@ -19,6 +19,9 @@
   "keywords": [
     "oauth2"
   ],
+  "directories": {
+    "lib": "./lib"
+  },
   "author": {
     "name": "Digital Bazaar, Inc.",
     "email": "support@digitalbazaar.com",
@@ -32,9 +35,6 @@
     "@interop/oauth2-errors": "^2.1.0",
     "assert-plus": "^1.0.0"
   },
-  "directories": {
-    "lib": "./lib"
-  },
   "devDependencies": {
     "@digitalbazaar/lru-memoize": "^3.0.0",
     "chai": "^4.3.7",
@@ -47,5 +47,8 @@
     "express": "^4.18.2",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }
