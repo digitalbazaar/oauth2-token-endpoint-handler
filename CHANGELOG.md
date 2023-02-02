@@ -1,5 +1,13 @@
 # @digitalbazaar/oauth2-token-endpoint-handler ChangeLog
 
+## 3.0.0 - 2023-TBD
+
+### Changed
+- **BREAKING**: Convert to module (ESM).
+- **BREAKING**: Drop support for node <= 14.
+- Update dev deps to latest.
+- Use `c8@7.12.0` for coverage.
+
 ## 2.0.0 - 2021-12-15
 
 ### Added
