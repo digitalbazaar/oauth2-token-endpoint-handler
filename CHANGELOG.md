@@ -1,6 +1,6 @@
 # @digitalbazaar/oauth2-token-endpoint-handler ChangeLog
 
-## 3.0.0 - 2023-TBD
+## 3.0.0 - 2023-02-06
 
 ### Changed
 - **BREAKING**: Convert to module (ESM).
