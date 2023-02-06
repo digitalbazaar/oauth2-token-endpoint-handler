@@ -1,6 +1,6 @@
 {
   "name": "@digitalbazaar/oauth2-token-endpoint-handler",
-  "version": "2.0.1-0",
+  "version": "3.0.0",
   "description": "OAuth2 Token endpoint handler for custom authorization servers.",
   "type": "module",
   "main": "./lib/index.js",
