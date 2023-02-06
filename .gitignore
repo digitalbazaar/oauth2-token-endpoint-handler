@@ -102,3 +102,7 @@ dist
 
 # VSCode
 .vscode
+
+# Editor files
+*.sw[nop]
+*~
